@@ -37,24 +37,28 @@ const CalendarCross = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     const [title, setTitle] = useState('');
+    const [startDateTime, setStartDateTime] = useState('');
+    const [endDateTime, setEndDateTime] = useState('');
 
-    const handleOpenSlot = ({ start, end }) => {
-        setOpenSlot(true)
-        handleSelect({ start, end })
-    };
-
-
-    const handleSelect = ({ start, end }) => {
+    const handleSelect = ({ start = startDateTime, end = endDateTime }) => {
         if (title.length > 0) {
             setEvents([...events, { start, end, title }]);
             setTitle('')
+            handleCloseSlot();
         }
+    };
+
+    const handleOpenSlot = ({ start, end }) => {
+        setOpenSlot(true)
+        setStartDateTime(start);
+        setEndDateTime(end);
     };
 
     const handleDeleteEvent = (eventToDelete) => {
         const updatedEvents = events.filter((event) => event !== eventToDelete);
         setEvents(updatedEvents);
         setSelectedEvent(null);
+        handleCloseEvent();
     };
 
     useEffect(() => {
@@ -117,6 +121,8 @@ const CalendarCross = () => {
                 <Fade in={openSlot}>
                     <Box sx={style}>
                         <TextField placeholder='Ttile' value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <br />
+                        <Button variant='contained' size="small" onClick={handleSelect}>Add</Button>
                     </Box>
                 </Fade>
             </Modal>
