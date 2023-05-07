@@ -9,6 +9,9 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { TextField } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+
 
 const localizer = momentLocalizer(moment);
 
@@ -37,12 +40,14 @@ const CalendarCross = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
 
     const [title, setTitle] = useState('');
+    const [type, setType] = useState('select-meeting-type');
     const [startDateTime, setStartDateTime] = useState('');
     const [endDateTime, setEndDateTime] = useState('');
 
     const handleSelect = ({ start = startDateTime, end = endDateTime }) => {
+        const id = events.length;
         if (title.length > 0) {
-            setEvents([...events, { start, end, title }]);
+            setEvents([...events, { id, start, end, title, type }]);
             setTitle('')
             handleCloseSlot();
         }
@@ -59,6 +64,21 @@ const CalendarCross = () => {
         setEvents(updatedEvents);
         setSelectedEvent(null);
         handleCloseEvent();
+    };
+
+    const eventStyleGetter = (event, start, end, isSelected) => {
+        let backgroundColor = '#3174ad'; // default background color
+        if (event.type === 'meeting') {
+            backgroundColor = '#ffc107'; // change background color for meeting events
+        } else if (event.type === 'interview') {
+            backgroundColor = '#28a745'; // change background color for interview events
+        }
+
+        return {
+            style: {
+                backgroundColor,
+            },
+        };
     };
 
     useEffect(() => {
@@ -81,6 +101,7 @@ const CalendarCross = () => {
                     onSelectSlot={handleOpenSlot}
                     style={{ height: '90vh' }}
                     onSelectEvent={event => { setSelectedEvent(event) }}
+                    eventPropGetter={eventStyleGetter}
                 />
             </div>
 
@@ -123,6 +144,18 @@ const CalendarCross = () => {
                         <Typography variant='h6'>Add title or task</Typography>
                         <br />
                         <TextField placeholder='Ttile' value={title} variant="standard" onChange={(e) => setTitle(e.target.value)} style={{ width: '100%' }} />
+                        <br />
+                        <br />
+                        <Select
+                            id="meeting-type-select"
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            variant='standard'
+                        >
+                            <MenuItem value='select-meeting-type'>Select Meeting Type</MenuItem>
+                            <MenuItem value={'meeting'}>Metting</MenuItem>
+                            <MenuItem value={'interview'}>Interview</MenuItem>
+                        </Select>
                         <br />
                         <br />
                         <div style={{ display: "flex", justifyContent: 'flex-end' }}>
