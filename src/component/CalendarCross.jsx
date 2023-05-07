@@ -120,9 +120,14 @@ const CalendarCross = () => {
             >
                 <Fade in={openSlot}>
                     <Box sx={style}>
-                        <TextField placeholder='Ttile' value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <Typography variant='h6'>Add title or task</Typography>
                         <br />
-                        <Button variant='contained' size="small" onClick={handleSelect}>Add</Button>
+                        <TextField placeholder='Ttile' value={title} variant="standard" onChange={(e) => setTitle(e.target.value)} style={{ width: '100%' }} />
+                        <br />
+                        <br />
+                        <div style={{ display: "flex", justifyContent: 'flex-end' }}>
+                            <Button variant='contained' size="small" onClick={handleSelect}>Add</Button>
+                        </div>
                     </Box>
                 </Fade>
             </Modal>
