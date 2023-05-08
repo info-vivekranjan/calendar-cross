@@ -30,7 +30,10 @@ const style = {
 const CalendarCross = () => {
   const [openEvent, setOpenEvent] = React.useState(false);
   const handleOpenEvent = () => setOpenEvent(true);
-  const handleCloseEvent = () => setOpenEvent(false);
+  const handleCloseEvent = () => {
+    setOpenEvent(false);
+    setSelectedEvent(null);
+  };
 
   const [openSlot, setOpenSlot] = React.useState(false);
   const handleCloseSlot = () => setOpenSlot(false);
@@ -87,7 +90,8 @@ const CalendarCross = () => {
     }
   }, [selectedEvent]);
 
-  console.log(events);
+  console.log(selectedEvent);
+  // console.log(events);
   return (
     <>
       <div
@@ -133,6 +137,19 @@ const CalendarCross = () => {
       >
         <Fade in={openEvent}>
           <Box sx={style}>
+            <Typography variant="h5">{selectedEvent?.title}</Typography>
+            <Typography>{selectedEvent?.type}</Typography>
+            <Typography>
+              <Button
+                variant="contained"
+                href={selectedEvent?.meetingLink}
+                target="_blank"
+              >
+                Join {selectedEvent?.type}
+              </Button>
+            </Typography>
+            <br />
+            <br />
             <Typography>From here the added slot can be deleted</Typography>
             <Button
               variant="outlined"
@@ -188,7 +205,11 @@ const CalendarCross = () => {
             <br />
             <Typography>
               Please create meeting from this link:{" "}
-              <Link href="https://apps.google.com/meet/" underline="hover" target="_blank">
+              <Link
+                href="https://apps.google.com/meet/"
+                underline="hover"
+                target="_blank"
+              >
                 {"create meeting"}
               </Link>{" "}
             </Typography>
