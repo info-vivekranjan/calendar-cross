@@ -11,6 +11,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Link from "@mui/material/Link";
 
 const localizer = momentLocalizer(moment);
 
@@ -39,13 +40,14 @@ const CalendarCross = () => {
 
   const [title, setTitle] = useState("");
   const [type, setType] = useState("select-meeting-type");
+  const [meetingLink, setMeetingLink] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
 
   const handleSelect = ({ start = startDateTime, end = endDateTime }) => {
     const id = events.length;
     if (title.length > 0) {
-      setEvents([...events, { id, start, end, title, type }]);
+      setEvents([...events, { id, start, end, title, type, meetingLink }]);
       setTitle("");
       handleCloseSlot();
     }
@@ -174,6 +176,7 @@ const CalendarCross = () => {
               value={type}
               onChange={(e) => setType(e.target.value)}
               variant="standard"
+              style={{ width: "100%" }}
             >
               <MenuItem value="select-meeting-type">
                 Select Meeting Type
@@ -181,6 +184,21 @@ const CalendarCross = () => {
               <MenuItem value={"meeting"}>Metting</MenuItem>
               <MenuItem value={"interview"}>Interview</MenuItem>
             </Select>
+            <br />
+            <br />
+            <Typography>
+              Please create meeting from this link:{" "}
+              <Link href="https://apps.google.com/meet/" underline="hover" target="_blank">
+                {"create meeting"}
+              </Link>{" "}
+            </Typography>
+            <TextField
+              placeholder="Add meeting link"
+              value={meetingLink}
+              variant="standard"
+              onChange={(e) => setMeetingLink(e.target.value)}
+              style={{ width: "100%" }}
+            />
             <br />
             <br />
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
